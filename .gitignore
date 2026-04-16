@@ -148,6 +148,9 @@ venv.bak/
 .spyderproject
 .spyproject
 
+#dev
+READMEDEV.md
+
 # Rope project settings
 .ropeproject
 

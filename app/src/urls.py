@@ -7,5 +7,6 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('academico/', include('academico.urls')),
+    path('rrhh/', include('rrhh.urls')),
     path('', RedirectView.as_view(url='/academico/notas/')),
 ]

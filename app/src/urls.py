@@ -8,5 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('academico/', include('academico.urls')),
     path('rrhh/', include('rrhh.urls')),
+    path('finanzas/', include('finanzas.urls')),
+    # ESTA URL ES DE PRUEBA , SIMULA EL HOME /
     path('', RedirectView.as_view(url='/academico/notas/')),
 ]

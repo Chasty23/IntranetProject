@@ -1,0 +1,32 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-warning shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">Modificar Calificación</h4>
+                </div>
+                <div class="card-body">
+                    <p><strong>Estudiante:</strong> {{ nota.estudiante.usuario.get_full_name }}</p>
+                    <p><strong>Materia:</strong> {{ nota.materia.nombre }}</p>
+                    <hr>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="calificacion" class="form-label">Nueva Nota:</label>
+                            <input type="number" step="0.1" name="calificacion" 
+                                   class="form-control" id="calificacion" 
+                                   value="{{ nota.calificacion }}" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_notas' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

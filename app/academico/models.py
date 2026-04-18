@@ -8,9 +8,9 @@ class Materia(models.Model):
     def __str__(self):
         return self.nombre
 
-# Representacion del expediente academico de un estudiante, relacionado con el usuario de Django para autenticacion y autorizacion
+# representacion del expediente academico de un estudiante, relacionado con el usuario de Django para autenticacion y autorizacion
 class ExpedienteEstudiante(models.Model):
-    # Relacionamos con el usuario de Django para el login
+    # se relaciona con el usuario de Django para el login
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     carnet = models.CharField(max_length=12, unique=True)
     carrera = models.CharField(max_length=100)

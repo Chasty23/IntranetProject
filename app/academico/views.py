@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from .models import Nota
 
 @login_required
+@permission_required('academico.view_nota', raise_exception=True)
 def lista_notas(request):
     # Todos los usuarios autenticados pueden ver las notas (Nivel Consulta) [cite: 71]
     notas = Nota.objects.all()

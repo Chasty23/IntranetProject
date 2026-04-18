@@ -8,4 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('academico/', include('academico.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
+    path('rrhh/', include('rrhh.urls')),
+    path('finanzas/', include('finanzas.urls')),
+    # ESTA URL ES DE PRUEBA , SIMULA EL HOME /
+    path('', TemplateView.as_view(template_name='index.html')),
 ]

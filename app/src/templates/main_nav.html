@@ -41,6 +41,11 @@
             </li>
           {% endif %}
         {% endfor %}
+        {% if user.is_authenticated %}
+          <li>
+            <p>Bienvenido, {{ user.username }}</p>
+          </li>
+        {% endif %}
       </ul>
     </div>
   </div>

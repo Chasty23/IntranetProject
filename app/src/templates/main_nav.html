@@ -1,7 +1,10 @@
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
      aria-label="Navbar example">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand" href="#">
+      <img src="{% static "brand-3677722819.png" %}"  height="40" width="40"/>
+    </a>
     <button class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -39,12 +42,6 @@
           {% endif %}
         {% endfor %}
       </ul>
-      <form role="search">
-        <input class="form-control"
-               type="search"
-               placeholder="Search"
-               aria-label="Search" />
-      </form>
     </div>
   </div>
 </nav>

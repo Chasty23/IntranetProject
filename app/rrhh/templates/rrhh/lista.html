@@ -37,7 +37,7 @@
                         <td>{{ e.puesto }}</td>
                         <td>
                             {% if perms.rrhh.puede_gestionar_rrhh %}
-                                <a href="#" class="btn btn-sm btn-info">Gestionar</a>
+                                <a href="{% url 'detalle_empleado' e.id %}" class="btn btn-sm btn-info">Gestionar</a>
                             {% else %}
                                 <span class="badge bg-secondary">Solo Lectura</span>
                             {% endif %}

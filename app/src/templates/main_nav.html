@@ -37,14 +37,16 @@
           {% else %}
             <li class="nav-item">
               <a class="nav-link{% if item.disabled %} disabled{% endif %}{% if item.active %} active{% endif %}"
-                 href="{{ item.url }}">{{ item.title }}</a>
+                 href="{{ item.url }}">{{ item.title }}
+              </a>
             </li>
           {% endif %}
         {% endfor %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-          <li>
-            <p>Bienvenido, {{ user.username }}</p>
-          </li>
+          <span class="welcome-text text-white">{{ user.get_short_name}}</span> 
+        {% else %}
         {% endif %}
       </ul>
     </div>

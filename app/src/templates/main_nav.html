@@ -51,6 +51,7 @@
             <button type="submit" class="btn btn-link nav-link p-0 m-0 border-0 align-baseline text-white"> Logout</button>
           </form>
         {% else %}
+          <a class="nav-link text-white" href="{% url 'admin:login' %}">Login</a>
         {% endif %}
       </ul>
     </div>

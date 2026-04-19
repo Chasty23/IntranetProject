@@ -1,0 +1,66 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$tV8N2aM6uR1p$zW9qK8jH7vX5m4L3n2B1vC0xY9u8i7o6p5q4r3s2t1=",
+      "last_login": "2026-04-19T12:00:00Z",
+      "is_superuser": false,
+      "username": "1723502023",
+      "first_name": "Guillermo Steven",
+      "last_name": "Chaves Cubias",
+      "email": "1723502023@utec.edu.sv",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-04-19T10:00:00Z"
+    }
+  },
+  {
+    "model": "academico.materia",
+    "pk": 2,
+    "fields": {
+      "nombre": "Matemáticas II",
+      "codigo": "MAT102"
+    }
+  },
+  {
+    "model": "academico.expedienteestudiante",
+    "pk": 2,
+    "fields": {
+      "usuario": 2,
+      "carnet": "AB-028540",
+      "carrera": "Ingeniería Informática"
+    }
+  },
+  {
+    "model": "academico.nota",
+    "pk": 2,
+    "fields": {
+      "estudiante": 2,
+      "materia": 2,
+      "calificacion": "10.00"
+    }
+  },
+  {
+    "model": "finanzas.pago",
+    "pk": 2,
+    "fields": {
+      "usuario": 2,
+      "concepto": "Matrícula Ciclo 01-2026",
+      "monto": "150.00",
+      "fecha_vencimiento": "2026-01-15",
+      "estado": "PAG"
+    }
+  },
+  {
+    "model": "rrhh.empleado",
+    "pk": 2,
+    "fields": {
+      "nombre": "Dr. Wolfgang Ernst Pauli",
+      "dui": "01233567-8",
+      "tipo": "DOC",
+      "puesto": "Catedrático de Física",
+      "fecha_contratacion": "2020-02-01"
+    }
+  } 
+]

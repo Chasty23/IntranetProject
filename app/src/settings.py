@@ -112,7 +112,7 @@ LOGIN_REDIRECT_URL = '/index/'
 # si no se esta logueado que mande a esta ruta
 LOGIN_URL = '/admin/login/'
 # para loguearnos
-LOGIN_REDIRECT_URL = '/index/' 
+LOGIN_REDIRECT_URL = '/admin/login/' 
 # para cerrar sesion 
 LOGOUT_REDIRECT_URL = '/'    
 # pagina de acceso por defecto

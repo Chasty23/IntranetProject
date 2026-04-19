@@ -45,7 +45,11 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-          <span class="welcome-text text-white">{{ user.get_short_name}}</span> 
+          <span class="welcome-text text-white">{{ user.get_short_name}} /  </span>
+          <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link p-0 m-0 border-0 align-baseline text-white"> Logout</button>
+          </form>
         {% else %}
         {% endif %}
       </ul>

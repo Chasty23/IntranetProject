@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestionar ticket
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    Gestionar ticket
+                </div>
+                <div class="card-body">
+                    <h4>{{ ticket.titulo }}</h4>
+                    <p class="text-muted">{{ ticket.descripcion }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">Estado</label>
+                            {{ form.estado }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.tecnico_asignado.id_for_label }}" class="form-label">Tecnico asignado</label>
+                            {{ form.tecnico_asignado }}
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

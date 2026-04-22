@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+Detalle prestamo
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Detalle de prestamo
+        </div>
+        <div class="card-body">
+            <p><strong>Libro:</strong> {{ prestamo.libro.titulo }}</p>
+            <p><strong>Autor:</strong> {{ prestamo.libro.autor }}</p>
+            <p><strong>Carnet:</strong> {{ prestamo.expediente.carnet }}</p>
+            <p><strong>Estudiante:</strong> {{ prestamo.expediente.usuario.get_full_name|default:prestamo.expediente.usuario.username }}</p>
+            <p><strong>Fecha prestamo:</strong> {{ prestamo.fecha_prestamo|date:"d/m/Y" }}</p>
+            <p><strong>Fecha devolucion:</strong> {{ prestamo.fecha_devolucion|date:"d/m/Y" }}</p>
+            <p><strong>Estado:</strong> {{ prestamo.get_estado_display }}</p>
+            <div class="d-flex gap-2">
+                <a href="{% url 'lista_prestamos_biblioteca' %}" class="btn btn-outline-secondary">Volver</a>
+                {% if perms.biblioteca.puede_gestionar_biblioteca %}
+                <a href="{% url 'actualizar_prestamo_biblioteca' prestamo.id %}" class="btn btn-success">Actualizar estado</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

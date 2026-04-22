@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nueva inscripcion
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Nueva inscripcion
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if form.expediente %}
+                        <div class="mb-3">
+                            <label for="{{ form.expediente.id_for_label }}" class="form-label">Expediente</label>
+                            {{ form.expediente }}
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="{{ form.materia.id_for_label }}" class="form-label">Materia</label>
+                            {{ form.materia }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.ciclo.id_for_label }}" class="form-label">Ciclo</label>
+                            {{ form.ciclo }}
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_inscripciones_registro' %}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

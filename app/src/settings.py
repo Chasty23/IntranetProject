@@ -49,6 +49,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -104,9 +105,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "src/static",
+    BASE_DIR / "src" / "static",
 ]
 # para que al iniciar sesion, me mande al módulo academico
 LOGIN_REDIRECT_URL = '/index/'
@@ -114,8 +115,8 @@ LOGIN_REDIRECT_URL = '/index/'
 # si no se esta logueado que mande a esta ruta
 LOGIN_URL = '/admin/login/'
 # para loguearnos
-LOGIN_REDIRECT_URL = '/index/' 
+LOGIN_REDIRECT_URL = '/admin/login/' 
 # para cerrar sesion 
-LOGOUT_REDIRECT_URL = '/admin/login/'    
+LOGOUT_REDIRECT_URL = '/'    
 # pagina de acceso por defecto
 LOGIN_URL = '/admin/login/'              

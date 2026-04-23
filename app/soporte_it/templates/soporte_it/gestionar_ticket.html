@@ -1,33 +1,44 @@
 {% extends "base.html" %}
 
 {% block title %}
-Gestionar ticket
+Gestionar Ticket #{{ ticket.id }}
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    Gestionar ticket
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding">
+                    <h5 class="mb-0">Gestionar Ticket #{{ ticket.id }} - {{ ticket.titulo }}</h5>
                 </div>
                 <div class="card-body">
-                    <h4>{{ ticket.titulo }}</h4>
-                    <p class="text-muted">{{ ticket.descripcion }}</p>
-                    <form method="post">
+                    <p><strong>Solicitante:</strong> {{ ticket.solicitante.username }}</p>
+                    <p><strong>Descripción:</strong> {{ ticket.descripcion }}</p>
+                    <hr>
+                    <form method="POST">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="{{ form.estado.id_for_label }}" class="form-label">Estado</label>
-                            {{ form.estado }}
+                            <label for="estado" class="form-label">Estado</label>
+                            <select name="estado" class="form-select" id="estado">
+                                <option value="ABI" {% if ticket.estado == 'ABI' %}selected{% endif %}>Abierto</option>
+                                <option value="PRO" {% if ticket.estado == 'PRO' %}selected{% endif %}>En Proceso</option>
+                                <option value="RES" {% if ticket.estado == 'RES' %}selected{% endif %}>Resuelto</option>
+                                <option value="CER" {% if ticket.estado == 'CER' %}selected{% endif %}>Cerrado</option>
+                            </select>
                         </div>
                         <div class="mb-3">
-                            <label for="{{ form.tecnico_asignado.id_for_label }}" class="form-label">Tecnico asignado</label>
-                            {{ form.tecnico_asignado }}
+                            <label for="tecnico_asignado" class="form-label">Técnico Asignado</label>
+                            <select name="tecnico_asignado" class="form-select" id="tecnico_asignado">
+                                <option value="">-- Sin asignar --</option>
+                                {% for tec in tecnicos %}
+                                    <option value="{{ tec.id }}" {% if ticket.tecnico_asignado.id == tec.id %}selected{% endif %}>{{ tec.username }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-outline-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-success">Guardar cambios</button>
+                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>
@@ -36,4 +47,3 @@ Gestionar ticket
     </div>
 </div>
 {% endblock content %}
-

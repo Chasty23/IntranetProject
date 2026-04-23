@@ -1,39 +1,32 @@
-from django.contrib.auth.models import User
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Ticket(models.Model):
+    PRIORIDADES = [
+        ('BAJ', 'Baja'),
+        ('MED', 'Media'),
+        ('ALT', 'Alta'),
+        ('CRI', 'Critica'),
+    ]
     ESTADOS = [
         ('ABI', 'Abierto'),
-        ('PRO', 'En proceso'),
+        ('PRO', 'En Proceso'),
         ('RES', 'Resuelto'),
         ('CER', 'Cerrado'),
     ]
-
-    titulo = models.CharField(max_length=150)
+    solicitante = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets_solicitados')
+    titulo = models.CharField(max_length=200)
     descripcion = models.TextField()
+    prioridad = models.CharField(max_length=3, choices=PRIORIDADES, default='MED')
     estado = models.CharField(max_length=3, choices=ESTADOS, default='ABI')
-    solicitante = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='tickets_creados',
-    )
-    tecnico_asignado = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        related_name='tickets_asignados',
-        null=True,
-        blank=True,
-    )
+    tecnico_asignado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tickets_asignados')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-fecha_creacion']
-        permissions = [
-            ('puede_gestionar_tickets', 'Puede gestionar todos los tickets'),
-            ('puede_atender_tickets', 'Puede atender tickets asignados'),
-        ]
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.titulo} - {self.solicitante.username}"
+        return f"#{self.id} - {self.titulo}"
 
+    class Meta:
+        permissions = [
+            ("puede_gestionar_soporte", "Puede gestionar tickets de soporte"),
+        ]

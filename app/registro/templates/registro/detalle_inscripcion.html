@@ -1,30 +1,39 @@
 {% extends "base.html" %}
 
 {% block title %}
-Detalle inscripcion
+Detalle Inscripción
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-            Detalle de inscripcion
-        </div>
-        <div class="card-body">
-            <p><strong>Carnet:</strong> {{ inscripcion.expediente.carnet }}</p>
-            <p><strong>Estudiante:</strong> {{ inscripcion.expediente.usuario.get_full_name|default:inscripcion.expediente.usuario.username }}</p>
-            <p><strong>Carrera:</strong> {{ inscripcion.expediente.carrera }}</p>
-            <p><strong>Materia:</strong> {{ inscripcion.materia.nombre }} ({{ inscripcion.materia.codigo }})</p>
-            <p><strong>Ciclo:</strong> {{ inscripcion.ciclo.nombre }}</p>
-            <p><strong>Fecha de registro:</strong> {{ inscripcion.fecha_registro|date:"d/m/Y H:i" }}</p>
-            <div class="d-flex gap-2">
-                <a href="{% url 'lista_inscripciones_registro' %}" class="btn btn-outline-secondary">Volver</a>
-                {% if user == inscripcion.expediente.usuario or user.is_superuser or perms.registro.puede_gestionar_registro %}
-                <a href="{% url 'eliminar_inscripcion_registro' inscripcion.id %}" class="btn btn-outline-danger">Eliminar</a>
-                {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Detalle de Inscripción #{{ inscripcion.id }}</h5>
+                    <span class="badge bg-light text-dark">{{ inscripcion.ciclo.nombre }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Carnet:</strong> {{ inscripcion.estudiante.carnet }}</p>
+                            <p><strong>Estudiante:</strong> {{ inscripcion.estudiante.usuario.get_full_name }}</p>
+                            <p><strong>Carrera:</strong> {{ inscripcion.estudiante.carrera }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Materia:</strong> {{ inscripcion.materia.nombre }}</p>
+                            <p><strong>Código:</strong> {{ inscripcion.materia.codigo }}</p>
+                            <p><strong>Fecha de inscripción:</strong> {{ inscripcion.fecha_inscripcion|date:"d/m/Y H:i" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'lista_inscripciones_registro' %}" class="btn btn-secondary">Volver al listado</a>
+                        <a href="{% url 'eliminar_inscripcion_registro' inscripcion.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock content %}
-

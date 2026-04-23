@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Crear Ticket
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding">
+                    <h5 class="mb-0">Crear Nuevo Ticket de Soporte</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="titulo" class="form-label">Título</label>
+                            <input type="text" name="titulo" class="form-control" id="titulo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción del problema</label>
+                            <textarea name="descripcion" class="form-control" id="descripcion" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prioridad" class="form-label">Prioridad</label>
+                            <select name="prioridad" class="form-select" id="prioridad">
+                                <option value="BAJ">Baja</option>
+                                <option value="MED" selected>Media</option>
+                                <option value="ALT">Alta</option>
+                                <option value="CRI">Critica</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_tickets' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Crear Ticket</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

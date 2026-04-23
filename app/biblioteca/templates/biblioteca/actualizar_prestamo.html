@@ -1,33 +1,36 @@
 {% extends "base.html" %}
 
 {% block title %}
-Actualizar prestamo
+Actualizar Préstamo
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    Actualizar estado de prestamo
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding">
+                    <h5 class="mb-0">Actualizar Préstamo #{{ prestamo.id }}</h5>
                 </div>
                 <div class="card-body">
-                    <h5>{{ prestamo.libro.titulo }}</h5>
-                    <p class="text-muted">{{ prestamo.expediente.carnet }}</p>
-                    <form method="post">
+                    <p><strong>Libro:</strong> {{ prestamo.libro.titulo }}</p>
+                    <p><strong>Estudiante:</strong> {{ prestamo.estudiante.carnet }} - {{ prestamo.estudiante.usuario.get_full_name }}</p>
+                    <p><strong>Fecha de préstamo:</strong> {{ prestamo.fecha_prestamo|date:"d/m/Y H:i" }}</p>
+                    <hr>
+                    <form method="POST">
                         {% csrf_token %}
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="devuelto" class="form-check-input" id="devuelto" {% if prestamo.devuelto %}checked{% endif %}>
+                            <label class="form-check-label" for="devuelto">Marcar como devuelto</label>
+                        </div>
                         <div class="mb-3">
-                            <label for="estado" class="form-label">Estado</label>
-                            <select name="estado" id="estado" class="form-select">
-                                {% for codigo, nombre in estados %}
-                                <option value="{{ codigo }}" {% if prestamo.estado == codigo %}selected{% endif %}>{{ nombre }}</option>
-                                {% endfor %}
-                            </select>
+                            <label for="fecha_devolucion" class="form-label">Fecha de Devolución</label>
+                            <input type="date" name="fecha_devolucion" class="form-control" id="fecha_devolucion" 
+                                   value="{{ prestamo.fecha_devolucion|date:'Y-m-d' }}">
                         </div>
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_prestamo_biblioteca' prestamo.id %}" class="btn btn-outline-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-success">Guardar cambios</button>
+                            <a href="{% url 'detalle_prestamo' prestamo.id %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>

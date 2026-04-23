@@ -1,24 +1,28 @@
 {% extends "base.html" %}
 
 {% block title %}
-Eliminar inscripcion
+Eliminar Inscripción
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm border-danger">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
                 <div class="card-header bg-danger text-white">
-                    Eliminar inscripcion
+                    <h5 class="mb-0">Eliminar Inscripción</h5>
                 </div>
                 <div class="card-body">
-                    <p>Estas seguro que deseas eliminar la inscripcion de <strong>{{ inscripcion.materia.nombre }}</strong> para el ciclo <strong>{{ inscripcion.ciclo.nombre }}</strong>?</p>
-                    <form method="post">
+                    <p>¿Estás seguro de que deseas eliminar esta inscripción?</p>
+                    <p><strong>Materia:</strong> {{ inscripcion.materia.nombre }}</p>
+                    <p><strong>Ciclo:</strong> {{ inscripcion.ciclo.nombre }}</p>
+                    <p><strong>Estudiante:</strong> {{ inscripcion.estudiante.carnet }}</p>
+                    <hr>
+                    <form method="POST">
                         {% csrf_token %}
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_inscripcion_registro' inscripcion.id %}" class="btn btn-outline-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            <a href="{% url 'detalle_inscripcion_registro' inscripcion.id %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
                         </div>
                     </form>
                 </div>
@@ -27,4 +31,3 @@ Eliminar inscripcion
     </div>
 </div>
 {% endblock content %}
-

@@ -1,50 +1,50 @@
 {% extends "base.html" %}
 
 {% block title %}
-Ciclos
+Ciclos Académicos
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="mb-1">Ciclos academicos</h2>
-            <p class="text-muted mb-0">Gestion de ciclos para el modulo de registro.</p>
-        </div>
-        <a href="{% url 'crear_ciclo_registro' %}" class="btn btn-primary">Nuevo ciclo</a>
-    </div>
-
-    <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-            Ciclos
+    <div class="card shadow">
+        <div class="card-header table-header-color text-white card-heading-padding">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Ciclos Académicos</h5>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'lista_inscripciones_registro' %}" class="btn btn-outline-light btn-sm">Ver Inscripciones</a>
+                    <a href="{% url 'crear_ciclo_registro' %}" class="btn btn-light btn-sm">+ Nuevo Ciclo</a>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Nombre</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
-                        <th>Activo</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for ciclo in ciclos %}
+                    {% for c in ciclos %}
                     <tr>
-                        <td>{{ ciclo.nombre }}</td>
-                        <td>{{ ciclo.fecha_inicio|date:"d/m/Y" }}</td>
-                        <td>{{ ciclo.fecha_fin|date:"d/m/Y" }}</td>
+                        <td>{{ c.id }}</td>
+                        <td>{{ c.nombre }}</td>
+                        <td>{{ c.fecha_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ c.fecha_fin|date:"d/m/Y" }}</td>
                         <td>
-                            {% if ciclo.activo %}
-                            <span class="badge bg-success">Activo</span>
+                            {% if c.activo %}
+                                <span class="badge bg-success">Activo</span>
                             {% else %}
-                            <span class="badge bg-secondary">Inactivo</span>
+                                <span class="badge bg-secondary">Inactivo</span>
                             {% endif %}
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="text-center text-muted">No hay ciclos creados.</td>
+                        <td colspan="5" class="text-center">No hay ciclos registrados.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -53,4 +53,3 @@ Ciclos
     </div>
 </div>
 {% endblock content %}
-

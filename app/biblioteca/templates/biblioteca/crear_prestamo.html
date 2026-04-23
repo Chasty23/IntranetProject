@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nuevo Préstamo
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding">
+                    <h5 class="mb-0">Solicitar Préstamo de Libro</h5>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="libro" class="form-label">Libro</label>
+                            <select name="libro" class="form-select" id="libro" required>
+                                <option value="">-- Seleccionar libro --</option>
+                                {% for l in libros %}
+                                    <option value="{{ l.id }}">{{ l.titulo }} ({{ l.existencias }} disponibles)</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_prestamos' %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Solicitar Préstamo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

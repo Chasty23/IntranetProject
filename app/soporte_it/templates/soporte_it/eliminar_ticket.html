@@ -1,24 +1,27 @@
 {% extends "base.html" %}
 
 {% block title %}
-Eliminar ticket
+Eliminar Ticket #{{ ticket.id }}
 {% endblock title %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm border-danger">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
                 <div class="card-header bg-danger text-white">
-                    Eliminar ticket
+                    <h5 class="mb-0">Eliminar Ticket</h5>
                 </div>
                 <div class="card-body">
-                    <p>Estas seguro que deseas eliminar el ticket <strong>{{ ticket.titulo }}</strong>?</p>
-                    <form method="post">
+                    <p>¿Estás seguro de que deseas eliminar el siguiente ticket?</p>
+                    <p><strong>#{{ ticket.id }}</strong> - {{ ticket.titulo }}</p>
+                    <p class="text-muted">{{ ticket.descripcion|truncatewords:20 }}</p>
+                    <hr>
+                    <form method="POST">
                         {% csrf_token %}
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-outline-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
                         </div>
                     </form>
                 </div>

@@ -20,7 +20,7 @@ Eliminar Ticket #{{ ticket.id }}
                     <form method="POST">
                         {% csrf_token %}
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'detalle_ticket' ticket.id %}" class="btn btn-secondary">Cancelar</a>
+                            <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
                         </div>
                     </form>

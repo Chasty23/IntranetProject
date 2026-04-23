@@ -10,7 +10,7 @@ Soporte IT - Tickets
         <div class="card-header table-header-color text-white card-heading-padding">
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Soporte IT - Listado de Tickets</h5>
-                <a href="{% url 'crear_ticket' %}" class="btn btn-light btn-sm">+ Nuevo Ticket</a>
+                <a href="{% url 'crear_ticket_soporte' %}" class="btn btn-light btn-sm">+ Nuevo Ticket</a>
             </div>
         </div>
         <div class="card-body">
@@ -58,7 +58,7 @@ Soporte IT - Tickets
                         <td>{{ t.tecnico_asignado.username|default:"Sin asignar" }}</td>
                         <td>{{ t.fecha_creacion|date:"d/m/Y" }}</td>
                         <td>
-                            <a href="{% url 'detalle_ticket' t.id %}" class="btn action-buttoms btn-sm">Ver</a>
+                            <a href="{% url 'detalle_ticket_soporte' t.id %}" class="btn action-buttoms btn-sm">Ver</a>
                         </td>
                     </tr>
                     {% empty %}

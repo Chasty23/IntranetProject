@@ -12,9 +12,9 @@ Registro - Inscripciones
                 <h5 class="mb-0">Registro Académico - Inscripciones</h5>
                 <div class="d-flex gap-2">
                     {% if perms.registro.puede_gestionar_registro or user.is_superuser %}
-                        <a href="{% url 'lista_ciclos' %}" class="btn btn-outline-light btn-sm">Ver Ciclos</a>
+                        <a href="{% url 'lista_ciclos_registro' %}" class="btn btn-outline-light btn-sm">Ver Ciclos</a>
                     {% endif %}
-                    <a href="{% url 'crear_inscripcion' %}" class="btn btn-light btn-sm">+ Nueva Inscripción</a>
+                    <a href="{% url 'crear_inscripcion_registro' %}" class="btn btn-light btn-sm">+ Nueva Inscripción</a>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@ Registro - Inscripciones
                         <td>{{ i.ciclo.nombre }}</td>
                         <td>{{ i.fecha_inscripcion|date:"d/m/Y" }}</td>
                         <td>
-                            <a href="{% url 'detalle_inscripcion' i.id %}" class="btn action-buttoms btn-sm">Ver</a>
+                            <a href="{% url 'detalle_inscripcion_registro' i.id %}" class="btn action-buttoms btn-sm">Ver</a>
                         </td>
                     </tr>
                     {% empty %}

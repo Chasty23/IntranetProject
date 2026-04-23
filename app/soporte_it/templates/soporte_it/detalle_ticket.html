@@ -13,10 +13,10 @@ Ticket #{{ ticket.id }}
                     <h5 class="mb-0">Ticket #{{ ticket.id }} - {{ ticket.titulo }}</h5>
                     <div>
                         {% if ticket.solicitante == user or user.is_superuser %}
-                            <a href="{% url 'editar_ticket' ticket.id %}" class="btn btn-light btn-sm">Editar</a>
+                            <a href="{% url 'editar_ticket_soporte' ticket.id %}" class="btn btn-light btn-sm">Editar</a>
                         {% endif %}
                         {% if perms.soporte_it.puede_gestionar_soporte or user.is_superuser %}
-                            <a href="{% url 'gestionar_ticket' ticket.id %}" class="btn btn-warning btn-sm">Gestionar</a>
+                            <a href="{% url 'gestionar_ticket_soporte' ticket.id %}" class="btn btn-warning btn-sm">Gestionar</a>
                         {% endif %}
                     </div>
                 </div>
@@ -58,9 +58,9 @@ Ticket #{{ ticket.id }}
                     <p>{{ ticket.descripcion }}</p>
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'lista_tickets' %}" class="btn btn-secondary">Volver al listado</a>
+                        <a href="{% url 'lista_tickets_soporte' %}" class="btn btn-secondary">Volver al listado</a>
                         {% if ticket.solicitante == user or user.is_superuser %}
-                            <a href="{% url 'eliminar_ticket' ticket.id %}" class="btn btn-danger">Eliminar</a>
+                            <a href="{% url 'eliminar_ticket_soporte' ticket.id %}" class="btn btn-danger">Eliminar</a>
                         {% endif %}
                     </div>
                 </div>

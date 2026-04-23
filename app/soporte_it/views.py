@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -26,7 +26,8 @@ def puede_gestionar_ticket(usuario, ticket):
     )
 
 
-@login_required
+
+@permission_required('soporte_it.view_ticket', raise_exception=True)
 def lista_tickets(request):
     if request.user.is_superuser or request.user.has_perm(
         'soporte_it.puede_gestionar_tickets'
@@ -47,6 +48,7 @@ def lista_tickets(request):
 
 
 @login_required
+@permission_required('soporte_it.add_ticket', raise_exception=True)
 def crear_ticket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
@@ -65,7 +67,7 @@ def crear_ticket(request):
     )
 
 
-@login_required
+@permission_required('soporte_it.view_ticket', raise_exception=True)
 def detalle_ticket(request, ticket_id):
     ticket = get_object_or_404(
         Ticket.objects.select_related('solicitante', 'tecnico_asignado'),
@@ -82,6 +84,7 @@ def detalle_ticket(request, ticket_id):
 
 
 @login_required
+@permission_required('soporte_it.change_ticket', raise_exception=True)
 def editar_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     puede_editar = (
@@ -108,6 +111,7 @@ def editar_ticket(request, ticket_id):
 
 
 @login_required
+@permission_required('soporte_it.change_ticket', raise_exception=True)
 def gestionar_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     if not puede_gestionar_ticket(request.user, ticket):
@@ -142,6 +146,7 @@ def gestionar_ticket(request, ticket_id):
 
 
 @login_required
+@permission_required('soporte_it.delete_ticket', raise_exception=True)
 def eliminar_ticket(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     puede_eliminar = (

@@ -17,13 +17,13 @@ def puede_ver_prestamo(usuario, prestamo):
     )
 
 
-@login_required
+@permission_required('biblioteca.view_libro', raise_exception=True)
 def lista_libros(request):
     libros = Libro.objects.all()
     return render(request, 'biblioteca/lista_libros.html', {'libros': libros})
 
 
-@login_required
+@permission_required('biblioteca.view_prestamo', raise_exception=True)
 def lista_prestamos(request):
     if request.user.is_superuser or request.user.has_perm(
         'biblioteca.puede_gestionar_biblioteca'
@@ -44,6 +44,7 @@ def lista_prestamos(request):
 
 
 @login_required
+@permission_required('biblioteca.add_prestamo', raise_exception=True)
 def crear_prestamo(request):
     if request.user.is_superuser or request.user.has_perm(
         'biblioteca.puede_gestionar_biblioteca'
@@ -80,6 +81,7 @@ def crear_prestamo(request):
 
 
 @login_required
+@permission_required('biblioteca.view_prestamo', raise_exception=True)
 def detalle_prestamo(request, prestamo_id):
     prestamo = get_object_or_404(
         Prestamo.objects.select_related('libro', 'expediente__usuario'),

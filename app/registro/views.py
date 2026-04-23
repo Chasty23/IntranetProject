@@ -17,7 +17,8 @@ def puede_ver_inscripcion(usuario, inscripcion):
     )
 
 
-@login_required
+
+@permission_required('registro.view_inscripcion', raise_exception=True)
 def lista_inscripciones(request):
     if request.user.is_superuser or request.user.has_perm(
         'registro.puede_gestionar_registro'
@@ -39,6 +40,7 @@ def lista_inscripciones(request):
 
 
 @login_required
+@permission_required('registro.add_inscripcion', raise_exception=True)
 def crear_inscripcion(request):
     if request.user.is_superuser or request.user.has_perm(
         'registro.puede_gestionar_registro'
@@ -74,6 +76,7 @@ def crear_inscripcion(request):
 
 
 @login_required
+@permission_required('registro.view_inscripcion', raise_exception=True)
 def detalle_inscripcion(request, inscripcion_id):
     inscripcion = get_object_or_404(
         Inscripcion.objects.select_related('expediente__usuario', 'materia', 'ciclo'),
@@ -90,6 +93,7 @@ def detalle_inscripcion(request, inscripcion_id):
 
 
 @login_required
+@permission_required('registro.delete_inscripcion', raise_exception=True)
 def eliminar_inscripcion(request, inscripcion_id):
     inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
     puede_eliminar = (

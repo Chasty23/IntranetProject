@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gestionar Ticket #{{ ticket.id }}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding">
+                    <h5 class="mb-0">Gestionar Ticket #{{ ticket.id }} - {{ ticket.titulo }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Solicitante:</strong> {{ ticket.solicitante.username }}</p>
+                    <p><strong>Descripción:</strong> {{ ticket.descripcion }}</p>
+                    <hr>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select name="estado" class="form-select" id="estado">
+                                <option value="ABI" {% if ticket.estado == 'ABI' %}selected{% endif %}>Abierto</option>
+                                <option value="PRO" {% if ticket.estado == 'PRO' %}selected{% endif %}>En Proceso</option>
+                                <option value="RES" {% if ticket.estado == 'RES' %}selected{% endif %}>Resuelto</option>
+                                <option value="CER" {% if ticket.estado == 'CER' %}selected{% endif %}>Cerrado</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tecnico_asignado" class="form-label">Técnico Asignado</label>
+                            <select name="tecnico_asignado" class="form-select" id="tecnico_asignado">
+                                <option value="">-- Sin asignar --</option>
+                                {% for tec in tecnicos %}
+                                    <option value="{{ tec.id }}" {% if ticket.tecnico_asignado.id == tec.id %}selected{% endif %}>{{ tec.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'detalle_ticket' ticket.id %}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -25,6 +25,9 @@ INSTALLED_APPS = [
     'academico',
     'rrhh',
     'finanzas',
+    'soporte_it',
+    'registro',
+    'biblioteca',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ticket #{{ ticket.id }}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Ticket #{{ ticket.id }} - {{ ticket.titulo }}</h5>
+                    <div>
+                        {% if ticket.solicitante == user or user.is_superuser %}
+                            <a href="{% url 'editar_ticket' ticket.id %}" class="btn btn-light btn-sm">Editar</a>
+                        {% endif %}
+                        {% if perms.soporte_it.puede_gestionar_soporte or user.is_superuser %}
+                            <a href="{% url 'gestionar_ticket' ticket.id %}" class="btn btn-warning btn-sm">Gestionar</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Solicitante:</strong> {{ ticket.solicitante.username }}</p>
+                            <p><strong>Fecha de creación:</strong> {{ ticket.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Última actualización:</strong> {{ ticket.fecha_actualizacion|date:"d/m/Y H:i" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Prioridad:</strong>
+                                {% if ticket.prioridad == 'CRI' %}
+                                    <span class="badge bg-danger">{{ ticket.get_prioridad_display }}</span>
+                                {% elif ticket.prioridad == 'ALT' %}
+                                    <span class="badge bg-warning text-dark">{{ ticket.get_prioridad_display }}</span>
+                                {% elif ticket.prioridad == 'MED' %}
+                                    <span class="badge bg-info">{{ ticket.get_prioridad_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ ticket.get_prioridad_display }}</span>
+                                {% endif %}
+                            </p>
+                            <p><strong>Estado:</strong>
+                                {% if ticket.estado == 'ABI' %}
+                                    <span class="badge bg-primary">{{ ticket.get_estado_display }}</span>
+                                {% elif ticket.estado == 'PRO' %}
+                                    <span class="badge bg-warning text-dark">{{ ticket.get_estado_display }}</span>
+                                {% elif ticket.estado == 'RES' %}
+                                    <span class="badge bg-success">{{ ticket.get_estado_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ ticket.get_estado_display }}</span>
+                                {% endif %}
+                            </p>
+                            <p><strong>Técnico asignado:</strong> {{ ticket.tecnico_asignado.username|default:"Sin asignar" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6>Descripción:</h6>
+                    <p>{{ ticket.descripcion }}</p>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'lista_tickets' %}" class="btn btn-secondary">Volver al listado</a>
+                        {% if ticket.solicitante == user or user.is_superuser %}
+                            <a href="{% url 'eliminar_ticket' ticket.id %}" class="btn btn-danger">Eliminar</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

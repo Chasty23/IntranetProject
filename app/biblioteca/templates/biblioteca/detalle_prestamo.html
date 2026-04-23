@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Detalle Préstamo
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header table-header-color text-white card-heading-padding d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Detalle de Préstamo #{{ prestamo.id }}</h5>
+                    {% if prestamo.devuelto %}
+                        <span class="badge bg-success">Devuelto</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Prestado</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Libro:</strong> {{ prestamo.libro.titulo }}</p>
+                            <p><strong>Autor:</strong> {{ prestamo.libro.autor }}</p>
+                            <p><strong>ISBN:</strong> {{ prestamo.libro.isbn }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Estudiante:</strong> {{ prestamo.estudiante.carnet }}</p>
+                            <p><strong>Fecha de préstamo:</strong> {{ prestamo.fecha_prestamo|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Fecha de devolución:</strong> {{ prestamo.fecha_devolucion|date:"d/m/Y"|default:"Pendiente" }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'lista_prestamos' %}" class="btn btn-secondary">Volver al listado</a>
+                        {% if perms.biblioteca.puede_gestionar_biblioteca or user.is_superuser %}
+                            <a href="{% url 'actualizar_prestamo' prestamo.id %}" class="btn action-buttoms">Actualizar Estado</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

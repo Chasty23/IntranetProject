@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Ciclos
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Ciclos academicos</h2>
+            <p class="text-muted mb-0">Gestion de ciclos para el modulo de registro.</p>
+        </div>
+        <a href="{% url 'crear_ciclo_registro' %}" class="btn btn-primary">Nuevo ciclo</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Ciclos
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ciclo in ciclos %}
+                    <tr>
+                        <td>{{ ciclo.nombre }}</td>
+                        <td>{{ ciclo.fecha_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ ciclo.fecha_fin|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if ciclo.activo %}
+                            <span class="badge bg-success">Activo</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Inactivo</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">No hay ciclos creados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

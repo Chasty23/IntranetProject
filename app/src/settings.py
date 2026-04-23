@@ -21,7 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_simple_nav',
     'academico',
+    'rrhh',
+    'finanzas',
+    'soporte_it',
+    'registro',
+    'biblioteca',
 ]
 
 MIDDLEWARE = [
@@ -38,7 +44,7 @@ ROOT_URLCONF = 'src.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'src/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -99,14 +105,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "src/static",
+]
 # para que al iniciar sesion, me mande al módulo academico
-LOGIN_REDIRECT_URL = '/academico/notas/'
+LOGIN_REDIRECT_URL = '/index/'
 
 # si no se esta logueado que mande a esta ruta
 LOGIN_URL = '/admin/login/'
 # para loguearnos
-LOGIN_REDIRECT_URL = '/academico/notas/' 
+LOGIN_REDIRECT_URL = '/index/' 
 # para cerrar sesion 
 LOGOUT_REDIRECT_URL = '/admin/login/'    
 # pagina de acceso por defecto

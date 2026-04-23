@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Detalle inscripcion
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Detalle de inscripcion
+        </div>
+        <div class="card-body">
+            <p><strong>Carnet:</strong> {{ inscripcion.expediente.carnet }}</p>
+            <p><strong>Estudiante:</strong> {{ inscripcion.expediente.usuario.get_full_name|default:inscripcion.expediente.usuario.username }}</p>
+            <p><strong>Carrera:</strong> {{ inscripcion.expediente.carrera }}</p>
+            <p><strong>Materia:</strong> {{ inscripcion.materia.nombre }} ({{ inscripcion.materia.codigo }})</p>
+            <p><strong>Ciclo:</strong> {{ inscripcion.ciclo.nombre }}</p>
+            <p><strong>Fecha de registro:</strong> {{ inscripcion.fecha_registro|date:"d/m/Y H:i" }}</p>
+            <div class="d-flex gap-2">
+                <a href="{% url 'lista_inscripciones_registro' %}" class="btn btn-outline-secondary">Volver</a>
+                {% if user == inscripcion.expediente.usuario or user.is_superuser or perms.registro.puede_gestionar_registro %}
+                <a href="{% url 'eliminar_inscripcion_registro' inscripcion.id %}" class="btn btn-outline-danger">Eliminar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

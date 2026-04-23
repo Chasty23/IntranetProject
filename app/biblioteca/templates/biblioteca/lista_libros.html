@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+Biblioteca
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Modulo de Biblioteca</h2>
+            <p class="text-muted mb-0">Inventario de libros y consulta de disponibilidad.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'lista_prestamos_biblioteca' %}" class="btn btn-outline-dark">Prestamos</a>
+            {% if perms.biblioteca.puede_gestionar_biblioteca %}
+            <a href="{% url 'crear_libro_biblioteca' %}" class="btn btn-primary">Nuevo libro</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Libros
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Autor</th>
+                            <th>ISBN</th>
+                            <th>Disponibles</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libros %}
+                        <tr>
+                            <td>{{ libro.titulo }}</td>
+                            <td>{{ libro.autor }}</td>
+                            <td>{{ libro.isbn }}</td>
+                            <td>{{ libro.ejemplares_disponibles }}</td>
+                            <td>{{ libro.ejemplares_totales }}</td>
+                            <td>
+                                {% if libro.activo %}
+                                <span class="badge bg-success">Activo</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Inactivo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No hay libros registrados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

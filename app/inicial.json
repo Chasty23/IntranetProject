@@ -1,0 +1,76 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$8mXnZ8vQ9p3r$e8a8b8c8d8e8f8g8h8i8j8k8l8m8n8o8p8q8r8s8t8u=",
+      "is_superuser": true,
+      "username": "Gerson",
+      "first_name": "Gerson",
+      "last_name": "Admin",
+      "email": "gerson@utec.edu.sv",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-04-23T10:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$8mXnZ8vQ9p3r$e8a8b8c8d8e8f8g8h8i8j8k8l8m8n8o8p8q8r8s8t8u=",
+      "is_superuser": false,
+      "username": "Guillermo",
+      "first_name": "Guillermo",
+      "last_name": "Chavez",
+      "email": "guillermo@utec.edu.sv",
+      "is_staff": true,
+      "is_active": true,
+      "user_permissions": [
+        ["academico", "nota", "view_nota"],
+        ["academico", "nota", "puede_modificar_notas"],
+        ["rrhh", "empleado", "view_empleado"]
+      ],
+      "date_joined": "2026-04-23T10:05:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$8mXnZ8vQ9p3r$e8a8b8c8d8e8f8g8h8i8j8k8l8m8n8o8p8q8r8s8t8u=",
+      "is_superuser": false,
+      "username": "Rodrigo",
+      "first_name": "Rodrigo",
+      "last_name": "Team",
+      "email": "rodrigo@utec.edu.sv",
+      "is_staff": true,
+      "is_active": true,
+      "user_permissions": [
+        ["academico", "nota", "view_nota"],
+        ["academico", "nota", "puede_modificar_notas"],
+        ["rrhh", "empleado", "view_empleado"]
+      ],
+      "date_joined": "2026-04-23T10:10:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$8mXnZ8vQ9p3r$e8a8b8c8d8e8f8g8h8i8j8k8l8m8n8o8p8q8r8s8t8u=",
+      "is_superuser": false,
+      "username": "Carlos",
+      "first_name": "Carlos",
+      "last_name": "Consulta",
+      "email": "carlos@utec.edu.sv",
+      "is_staff": true,
+      "is_active": true,
+      "user_permissions": [
+        ["academico", "nota", "view_nota"],
+        ["finanzas", "pago", "view_pago"]
+      ],
+      "date_joined": "2026-04-23T10:15:00Z"
+    }
+  }
+]

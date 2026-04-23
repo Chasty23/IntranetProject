@@ -78,3 +78,53 @@ proyecto de la creacion de una intranet en una universidad para la materia de IN
 | -------------------- | ---------- | -------------------------- | ------------------------------------------------------------------- |
 | **Estado de Cuenta** | `GET`      | `/finanzas/estado-cuenta/` | **Privado**: Alumnos (Steven/Carlos) solo ven sus propios pagos.    |
 | **Auditoría Global** | `GET`      | `/finanzas/estado-cuenta/` | **Admin**: Guillermo/Gerson ven el listado total de la institución. |
+## modulo soporte it
+
+Este modulo permite registrar y dar seguimiento a tickets de soporte tecnico dentro de la intranet.
+
+- Los usuarios comunes pueden crear tickets y ver los propios.
+- El personal de IT puede atender los tickets asignados.
+- El administrador puede ver y gestionar todos los tickets.
+
+| **Recurso**            | **Metodo**   | **URL**                                   | **Nivel de Acceso / Permiso**                       |
+| ---------------------- | ------------ | ----------------------------------------- | --------------------------------------------------- |
+| **Listado de Tickets** | `GET`        | `/soporte-it/tickets/`                    | **Consulta**: Segun rol del usuario autenticado.    |
+| **Crear Ticket**       | `GET / POST` | `/soporte-it/tickets/crear/`              | **Usuario comun**: Puede registrar nuevos tickets.  |
+| **Detalle de Ticket**  | `GET`        | `/soporte-it/tickets/<int:id>/`           | **Privado**: Solicitante, tecnico asignado o admin. |
+| **Editar Ticket**      | `GET / POST` | `/soporte-it/tickets/<int:id>/editar/`    | **Privado**: Solicitante o admin.                   |
+| **Gestionar Ticket**   | `GET / POST` | `/soporte-it/tickets/<int:id>/gestionar/` | **IT / Admin**: Cambio de estado y asignacion.      |
+| **Eliminar Ticket**    | `GET / POST` | `/soporte-it/tickets/<int:id>/eliminar/`  | **Privado**: Solicitante o admin.                   |
+
+## modulo registro
+
+Este modulo se integra con el modulo academico para permitir la inscripcion de materias por ciclo academico sin modificar las entidades existentes.
+
+- Reutiliza `ExpedienteEstudiante` y `Materia` del modulo academico.
+- Permite registrar ciclos academicos.
+- Permite inscribir materias por alumno y por ciclo.
+
+| **Recurso**                  | **Metodo**   | **URL**                                      | **Nivel de Acceso / Permiso**                                       |
+| ---------------------------- | ------------ | -------------------------------------------- | ------------------------------------------------------------------- |
+| **Listado de Inscripciones** | `GET`        | `/registro/inscripciones/`                   | **Consulta**: Usuario ve las propias; admin ve todas.               |
+| **Nueva Inscripcion**        | `GET / POST` | `/registro/inscripciones/crear/`             | **Usuario comun**: Si tiene expediente academico.                   |
+| **Detalle de Inscripcion**   | `GET`        | `/registro/inscripciones/<int:id>/`          | **Privado**: Alumno propietario o admin.                            |
+| **Eliminar Inscripcion**     | `GET / POST` | `/registro/inscripciones/<int:id>/eliminar/` | **Privado**: Alumno propietario o admin.                            |
+| **Listado de Ciclos**        | `GET`        | `/registro/ciclos/`                          | **Gestion**: Solo usuarios con `registro.puede_gestionar_registro`. |
+| **Crear Ciclo**              | `GET / POST` | `/registro/ciclos/crear/`                    | **Gestion**: Solo usuarios con `registro.puede_gestionar_registro`. |
+
+## modulo biblioteca
+
+Este modulo administra el inventario de libros y el control de prestamos a estudiantes registrados en la intranet.
+
+- Reutiliza `ExpedienteEstudiante` del modulo academico.
+- Controla existencias disponibles por libro.
+- Permite registrar prestamos y devoluciones.
+
+| **Recurso**              | **Metodo**   | **URL**                                      | **Nivel de Acceso / Permiso**                                          |
+| ------------------------ | ------------ | -------------------------------------------- | ---------------------------------------------------------------------- |
+| **Listado de Libros**    | `GET`        | `/biblioteca/libros/`                        | **Consulta**: Todos los usuarios autenticados.                         |
+| **Crear Libro**          | `GET / POST` | `/biblioteca/libros/crear/`                  | **Gestion**: Solo usuarios con `biblioteca.puede_gestionar_biblioteca`. |
+| **Listado de Prestamos** | `GET`        | `/biblioteca/prestamos/`                     | **Consulta**: Usuario ve los propios; admin ve todos.                  |
+| **Nuevo Prestamo**       | `GET / POST` | `/biblioteca/prestamos/crear/`               | **Usuario comun**: Si tiene expediente academico.                      |
+| **Detalle de Prestamo**  | `GET`        | `/biblioteca/prestamos/<int:id>/`            | **Privado**: Usuario propietario o admin.                              |
+| **Actualizar Prestamo**  | `GET / POST` | `/biblioteca/prestamos/<int:id>/actualizar/` | **Gestion**: Solo usuarios con `biblioteca.puede_gestionar_biblioteca`. |

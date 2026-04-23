@@ -14,6 +14,10 @@ urlpatterns = [
     path('soporte-it/', include('soporte_it.urls')),
     path('registro/', include('registro.urls')),
     path('biblioteca/', include('biblioteca.urls')),
+<<<<<<< HEAD
+=======
+    # ESTA URL ES DE PRUEBA , SIMULA EL HOME /
+>>>>>>> be03b1bf1a49f2546d64f83580d22f75115b93d9
     path('', TemplateView.as_view(template_name='index.html')),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

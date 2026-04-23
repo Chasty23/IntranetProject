@@ -6,6 +6,7 @@ Home
 
 {% block content %}
 <div class="container mt-5">
+<<<<<<< HEAD
   <div class="row">
     {% if perms.academico.view_materia %}
     <div class="col-md-4 col-xl-3">
@@ -21,6 +22,19 @@ Home
                   d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
               </svg></h2>
           </a>
+=======
+ <div class="row g-4">
+        <div class="col-md-4 col-xl-3">
+            <div class="card card-hover bg-c-blue order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Recursos Humanos</h6>
+                    <a href="{% url 'lista_empleados' %}" class="text-white text-decoration-none">
+                      <h2 class="text-right">Personal</h2>
+                      <p class="m-b-0">Consulta del personal universitario</p>
+                    </a>
+                </div>
+            </div>
+>>>>>>> be03b1bf1a49f2546d64f83580d22f75115b93d9
         </div>
       </div>
     </div>
@@ -40,6 +54,7 @@ Home
             </h2>
           </a>
         </div>
+<<<<<<< HEAD
       </div>
     </div>
     <div class="col-md-4 col-xl-3">
@@ -78,6 +93,52 @@ Home
               </svg>
             </h2>
           </a>
+=======
+        <div class="col-md-4 col-xl-3">
+            <div class="card card-hover bg-c-yellow order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Finanzas</h6>
+                    <a href="{% url 'estado_cuenta' %}" class="text-white text-decoration-none">
+                      <h2 class="text-right">Pagos</h2>
+                      <p class="m-b-0">Estado de cuenta y aranceles</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 col-xl-3">
+            <div class="card card-hover bg-c-pink order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Soporte IT</h6>
+                    <a href="{% url 'lista_tickets_soporte' %}" class="text-white text-decoration-none">
+                      <h2 class="text-right">Tickets</h2>
+                      <p class="m-b-0">Mesa de ayuda y seguimiento</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <div class="card card-hover bg-c-blue order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Registro</h6>
+                    <a href="{% url 'lista_inscripciones_registro' %}" class="text-white text-decoration-none">
+                      <h2 class="text-right">Inscripcion</h2>
+                      <p class="m-b-0">Registro de materias por ciclo</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-xl-3">
+            <div class="card card-hover bg-c-yellow order-card">
+                <div class="card-block">
+                    <h6 class="m-b-20">Biblioteca</h6>
+                    <a href="{% url 'lista_libros_biblioteca' %}" class="text-white text-decoration-none">
+                      <h2 class="text-right">Libros</h2>
+                      <p class="m-b-0">Inventario y prestamos</p>
+                    </a>
+                </div>
+            </div>
+>>>>>>> be03b1bf1a49f2546d64f83580d22f75115b93d9
         </div>
       </div>
     </div>

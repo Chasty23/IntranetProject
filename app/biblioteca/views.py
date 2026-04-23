@@ -1,102 +1,141 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseForbidden
-from .models import Libro, Prestamo
+from django.shortcuts import get_object_or_404, redirect, render
+
 from academico.models import ExpedienteEstudiante
 
-@login_required
+from .forms import LibroForm, PrestamoForm, PrestamoGestionForm
+from .models import Libro, Prestamo
+
+
+def puede_ver_prestamo(usuario, prestamo):
+    return (
+        usuario.is_superuser
+        or usuario.has_perm('biblioteca.puede_gestionar_biblioteca')
+        or prestamo.expediente.usuario == usuario
+    )
+
+
+@permission_required('biblioteca.view_libro', raise_exception=True)
 def lista_libros(request):
-    # Todos los usuarios autenticados pueden ver el catalogo
     libros = Libro.objects.all()
     return render(request, 'biblioteca/lista_libros.html', {'libros': libros})
+
+
+@permission_required('biblioteca.view_prestamo', raise_exception=True)
+def lista_prestamos(request):
+    if request.user.is_superuser or request.user.has_perm(
+        'biblioteca.puede_gestionar_biblioteca'
+    ):
+        prestamos = Prestamo.objects.select_related(
+            'libro', 'expediente__usuario'
+        ).all()
+    else:
+        prestamos = Prestamo.objects.select_related(
+            'libro', 'expediente__usuario'
+        ).filter(expediente__usuario=request.user)
+
+    return render(
+        request,
+        'biblioteca/lista_prestamos.html',
+        {'prestamos': prestamos},
+    )
+
+
+@login_required
+@permission_required('biblioteca.add_prestamo', raise_exception=True)
+def crear_prestamo(request):
+    if request.user.is_superuser or request.user.has_perm(
+        'biblioteca.puede_gestionar_biblioteca'
+    ):
+        form_class = PrestamoGestionForm
+        expediente = None
+    else:
+        expediente = ExpedienteEstudiante.objects.filter(usuario=request.user).first()
+        if expediente is None:
+            messages.error(
+                request,
+                'Tu usuario no tiene expediente academico vinculado.',
+            )
+            return redirect('lista_prestamos_biblioteca')
+        form_class = PrestamoForm
+
+    if request.method == 'POST':
+        form = form_class(request.POST)
+        if form.is_valid():
+            prestamo = form.save(commit=False)
+            if expediente is not None:
+                prestamo.expediente = expediente
+            if prestamo.libro.ejemplares_disponibles <= 0:
+                form.add_error('libro', 'No hay ejemplares disponibles para este libro.')
+            else:
+                prestamo.save()
+                prestamo.libro.ejemplares_disponibles -= 1
+                prestamo.libro.save(update_fields=['ejemplares_disponibles'])
+                return redirect('lista_prestamos_biblioteca')
+    else:
+        form = form_class()
+
+    return render(request, 'biblioteca/form_prestamo.html', {'form': form})
+
+
+@login_required
+@permission_required('biblioteca.view_prestamo', raise_exception=True)
+def detalle_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(
+        Prestamo.objects.select_related('libro', 'expediente__usuario'),
+        id=prestamo_id,
+    )
+    if not puede_ver_prestamo(request.user, prestamo):
+        return HttpResponseForbidden('No tienes acceso a este prestamo.')
+
+    return render(
+        request,
+        'biblioteca/detalle_prestamo.html',
+        {'prestamo': prestamo},
+    )
+
 
 @login_required
 @permission_required('biblioteca.puede_gestionar_biblioteca', raise_exception=True)
 def crear_libro(request):
     if request.method == 'POST':
-        titulo = request.POST.get('titulo')
-        autor = request.POST.get('autor')
-        isbn = request.POST.get('isbn')
-        existencias = request.POST.get('existencias', 1)
-        Libro.objects.create(
-            titulo=titulo,
-            autor=autor,
-            isbn=isbn,
-            existencias=existencias,
-        )
-        return redirect('lista_libros')
-    return render(request, 'biblioteca/crear_libro.html')
-
-@login_required
-def lista_prestamos(request):
-    # Admin ve todos, usuario ve solo los suyos
-    if request.user.has_perm('biblioteca.puede_gestionar_biblioteca') or request.user.is_superuser:
-        prestamos = Prestamo.objects.all().order_by('-fecha_prestamo')
+        form = LibroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_libros_biblioteca')
     else:
-        try:
-            expediente = ExpedienteEstudiante.objects.get(usuario=request.user)
-            prestamos = Prestamo.objects.filter(estudiante=expediente).order_by('-fecha_prestamo')
-        except ExpedienteEstudiante.DoesNotExist:
-            prestamos = Prestamo.objects.none()
-    return render(request, 'biblioteca/lista_prestamos.html', {'prestamos': prestamos})
+        form = LibroForm()
 
-@login_required
-def crear_prestamo(request):
-    try:
-        expediente = ExpedienteEstudiante.objects.get(usuario=request.user)
-    except ExpedienteEstudiante.DoesNotExist:
-        return HttpResponseForbidden("No tienes un expediente académico registrado.")
-    
-    if request.method == 'POST':
-        libro_id = request.POST.get('libro')
-        libro = get_object_or_404(Libro, id=libro_id)
-        if libro.existencias <= 0:
-            return render(request, 'biblioteca/crear_prestamo.html', {
-                'libros': Libro.objects.filter(existencias__gt=0),
-                'error': 'No hay existencias disponibles de este libro.'
-            })
-        Prestamo.objects.create(
-            estudiante=expediente,
-            libro=libro,
-        )
-        libro.existencias -= 1
-        libro.save()
-        return redirect('lista_prestamos')
-    
-    libros = Libro.objects.filter(existencias__gt=0)
-    return render(request, 'biblioteca/crear_prestamo.html', {'libros': libros})
+    return render(request, 'biblioteca/form_libro.html', {'form': form})
 
-@login_required
-def detalle_prestamo(request, id):
-    prestamo = get_object_or_404(Prestamo, id=id)
-    # Solo el propietario o admin
-    if not request.user.is_superuser:
-        try:
-            expediente = ExpedienteEstudiante.objects.get(usuario=request.user)
-            if prestamo.estudiante != expediente:
-                return HttpResponseForbidden("No tienes permiso para ver este préstamo.")
-        except ExpedienteEstudiante.DoesNotExist:
-            if not request.user.has_perm('biblioteca.puede_gestionar_biblioteca'):
-                return HttpResponseForbidden("No tienes permiso para ver este préstamo.")
-    return render(request, 'biblioteca/detalle_prestamo.html', {'prestamo': prestamo})
 
 @login_required
 @permission_required('biblioteca.puede_gestionar_biblioteca', raise_exception=True)
-def actualizar_prestamo(request, id):
-    prestamo = get_object_or_404(Prestamo, id=id)
+def actualizar_estado_prestamo(request, prestamo_id):
+    prestamo = get_object_or_404(Prestamo, id=prestamo_id)
+    estado_anterior = prestamo.estado
+
     if request.method == 'POST':
-        devuelto = request.POST.get('devuelto') == 'on'
-        fecha_devolucion = request.POST.get('fecha_devolucion') or None
-        # Si se marca como devuelto y antes no lo estaba, aumentar existencias
-        if devuelto and not prestamo.devuelto:
-            prestamo.libro.existencias += 1
-            prestamo.libro.save()
-        # Si se desmarca como devuelto y antes si lo estaba, disminuir existencias
-        elif not devuelto and prestamo.devuelto:
-            prestamo.libro.existencias -= 1
-            prestamo.libro.save()
-        prestamo.devuelto = devuelto
-        prestamo.fecha_devolucion = fecha_devolucion
-        prestamo.save()
-        return redirect('detalle_prestamo', id=prestamo.id)
-    return render(request, 'biblioteca/actualizar_prestamo.html', {'prestamo': prestamo})
+        nuevo_estado = request.POST.get('estado')
+        if nuevo_estado in {'ACT', 'DEV', 'ATR'}:
+            prestamo.estado = nuevo_estado
+            prestamo.save(update_fields=['estado'])
+
+            libro = prestamo.libro
+            if estado_anterior != 'DEV' and nuevo_estado == 'DEV':
+                libro.ejemplares_disponibles += 1
+                libro.save(update_fields=['ejemplares_disponibles'])
+            elif estado_anterior == 'DEV' and nuevo_estado != 'DEV':
+                if libro.ejemplares_disponibles > 0:
+                    libro.ejemplares_disponibles -= 1
+                    libro.save(update_fields=['ejemplares_disponibles'])
+
+        return redirect('detalle_prestamo_biblioteca', prestamo_id=prestamo.id)
+
+    return render(
+        request,
+        'biblioteca/actualizar_prestamo.html',
+        {'prestamo': prestamo, 'estados': Prestamo.ESTADOS},
+    )

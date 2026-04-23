@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+Soporte IT
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Modulo de Soporte IT</h2>
+            <p class="text-muted mb-0">Gestion de tickets para incidencias y soporte interno.</p>
+        </div>
+        <a href="{% url 'crear_ticket_soporte' %}" class="btn btn-primary">Nuevo ticket</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            Tickets
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Titulo</th>
+                            <th>Estado</th>
+                            <th>Solicitante</th>
+                            <th>Tecnico</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.titulo }}</td>
+                            <td>
+                                {% if ticket.estado == 'ABI' %}
+                                <span class="badge bg-primary">Abierto</span>
+                                {% elif ticket.estado == 'PRO' %}
+                                <span class="badge bg-warning text-dark">En proceso</span>
+                                {% elif ticket.estado == 'RES' %}
+                                <span class="badge bg-success">Resuelto</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Cerrado</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ ticket.solicitante.username }}</td>
+                            <td>
+                                {% if ticket.tecnico_asignado %}
+                                {{ ticket.tecnico_asignado.username }}
+                                {% else %}
+                                <span class="text-muted">Sin asignar</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ ticket.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'detalle_ticket_soporte' ticket.id %}" class="btn btn-sm btn-outline-dark">Ver</a>
+                                {% if user == ticket.solicitante or user.is_superuser or perms.soporte_it.puede_gestionar_tickets %}
+                                <a href="{% url 'editar_ticket_soporte' ticket.id %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                                {% endif %}
+                                {% if user == ticket.tecnico_asignado or user.is_superuser or perms.soporte_it.puede_gestionar_tickets %}
+                                <a href="{% url 'gestionar_ticket_soporte' ticket.id %}" class="btn btn-sm btn-outline-success">Gestionar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No hay tickets disponibles.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

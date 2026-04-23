@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Nuevo libro
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Nuevo libro
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.titulo.id_for_label }}" class="form-label">Titulo</label>
+                            {{ form.titulo }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.autor.id_for_label }}" class="form-label">Autor</label>
+                            {{ form.autor }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.isbn.id_for_label }}" class="form-label">ISBN</label>
+                            {{ form.isbn }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.ejemplares_totales.id_for_label }}" class="form-label">Ejemplares totales</label>
+                            {{ form.ejemplares_totales }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.ejemplares_disponibles.id_for_label }}" class="form-label">Ejemplares disponibles</label>
+                            {{ form.ejemplares_disponibles }}
+                        </div>
+                        <div class="form-check mb-3">
+                            {{ form.activo }}
+                            <label for="{{ form.activo.id_for_label }}" class="form-check-label">Activo</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'lista_libros_biblioteca' %}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
